@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Артикли с порядковыми числительными и «dernier» — автопроверка</title>
+  <style>
+    :root { --bg:#0d1117; --panel:#161b22; --border:#30363d; --text:#c9d1d9; --muted:#8b949e; --accent:#58a6ff; --ok:#3fb950; --bad:#f85149; }
+    * { box-sizing: border-box; }
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; line-height: 1.6; margin: 0; padding: 0; background: var(--bg); color: var(--text); }
+    header, footer { padding: 16px 20px; background: var(--panel); border-bottom: 1px solid var(--border); }
+    footer { border-top: 1px solid var(--border); border-bottom: none; margin-top: 24px; }
+    main { padding: 20px; max-width: 1000px; margin: 0 auto; }
+    a { color: var(--accent); text-decoration: none; } a:hover { text-decoration: underline; }
+    h1 { margin: 0 0 8px; font-size: 22px; }
+    .card { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin: 14px 0; }
+    .q { font-weight: 600; margin-bottom: 10px; }
+    .options { display: grid; grid-template-columns: repeat(4, minmax(80px, 1fr)); gap: 8px; margin-bottom: 8px; }
+    .options label { display: flex; align-items: center; gap: 8px; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 8px 10px; cursor: pointer; }
+    .options input { transform: scale(1.2); }
+    .feedback { font-size: 14px; color: var(--muted); min-height: 20px; }
+    .correct { color: var(--ok); } .incorrect { color: var(--bad); }
+    .controls { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+    button { background: #238636; color: white; border: none; border-radius: 10px; padding: 10px 14px; font-size: 14px; cursor: pointer; }
+    button.secondary { background: var(--border); color: var(--text); }
+    .score { font-weight: 700; }
+    .links { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+    .post { display: none; background: var(--panel); border: 1px dashed var(--border); border-radius: 12px; padding: 16px; margin-top: 12px; }
+    .post-body { white-space: pre-wrap; color: var(--text); }
+    .post-toggle { margin-top: 16px; background: #30363d; }
+    .blank { border-bottom: 2px dashed var(--muted); padding: 0 4px; }
+    .section-title { font-weight: 700; margin-bottom: 8px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Артикли с порядковыми числительными и «dernier»</h1>
+    <div class="links" style="margin-top:10px;">
+      <a href="https://vk.com/normproffr" target="_blank" rel="noopener">Группа VK</a>
+      <a href="https://t.me/normproffr" target="_blank" rel="noopener">Telegram-канал</a>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- 1–10: контрастные пары -->
+    <div class="card">
+      <div class="q">1) Le directeur demande <span class="blank">__</span> <i>deuxième</i> rapport.</div>
+      <div class="options" data-q="1">
+        <label><input type="radio" name="q1" value="un">un</label>
+        <label><input type="radio" name="q1" value="le">le</label>
+        <label><input type="radio" name="q1" value="une">une</label>
+        <label><input type="radio" name="q1" value="la">la</label>
+      </div>
+      <div class="feedback" id="f1"></div>
+    </div>
+
+    <div class="card">
+      <div class="q">2) <span class="blank">__</span> <i>deuxième</i> rapport ajoute des données manquantes.</div>
+      <div class="options" data-q="2">
+        <label><input type="radio" name="q2" value="un">un</label>
+        <label><input type="radio" name="q2" value="le">le</label>
+        <label><input type="radio" name="q2" value="une">une</label>
+        <label><input type="radio" name="q2" value="la">la</label>
+      </div>
+      <div class="feedback" id="f2"></div>
+    </div>
+
+    <div class="card">
+      <div class="q">3) On cherche <span class="blank">__</span> <i>quatrième</i> participant pour l'atelier.</div>
+      <div class="options" data-q="3">
+        <label><input type="radio" name="q3" value="un">un</label>
+        <label><input type="radio" name="q3" value="le">le</label>
+        <label><input type="radio" name="q3" value="une">une</label>
+        <label><input type="radio" name="q3" value="la">la</label>
+      </div>
+      <div class="feedback" id="f3"></div>
+    </div>
+
+    <div class="card">
+      <div class="q">4) Sans <span class="blank">__</span> <i>quatrième</i> participant habituel, l'équipe avance moins vite.</div>
+      <div class="options" data-q="4">
+        <label><input type="radio" name="q4" value="un">un</label>
+        <label><input type="radio" name="q4" value="le">le</label>
+        <label><input type="radio" name="q4" value="une">une</label>
+        <label><input type="radio" name="q4" value="la">la</label>
+      </div>
+      <div class="feedback" id="f4"></div>
+    </div>
+
+    <div class="card">
+      <div class="q">5) Six mois plus tard, on a sorti <span class="blank">__</span> <i>première</i> chanson.</div>
+      <div class="options" data-q="5">
+        <label><input type="radio" name="q5" value="un">un</label>
+        <label><input type="radio" name="q5" value="le">le</label>
+        <label><input type="radio" name="q5" value="une">une</label>
+        <label><input type="radio" name="q5" value="la">la</label>
+      </div>
+      <div class="feedback" id="f5"></div>
+    </div>
+
+    <div class="card">
+      <div class="q">6) <span class="blank">__</span> <i>première</i> chanson est vite devenue célèbre.</div>
+      <div class="options" data-q="6">
+        <label><input type="radio" name="q6" value="un">un</label>
+        <label><input type="radio" name="q6" value="le">le</label>
+        <label><input type="radio" name="q6" value="une">une</label>
+        <label><input type="radio" name="q6" value="la">la</label>
+      </div>
+      <div class="feedback" id="f6"></div>
+    </div>
+
+    <div class="card">
+      <div class="q">7) Il a posé <span class="blank">__</span> <i>dernière</i> question au professeur.</div>
+      <div class="options" data-q="7">
+        <label><input type="radio" name="q7" value="un">un</label>
+        <label><input type="radio" name="q7" value="le">le</label>
+        <label><input type="radio" name="q7" value="une">une</label>
+        <label><input type="radio" name="q7" value="la">la</label>
+      </div>
+      <div class="feedback" id="f7"></div>
+    </div>
+
+    <div class="card">
+      <div class="q">8) <span class="blank">__</span> <i>dernière</i> question a pris plus de temps que prévu.</div>
+      <div class="options" data-q="8">
+        <label><input type="radio" name="q8" value="un">un</label>
+        <label><input type="radio" name="q8" value="le">le</label>
+        <label><input type="radio" name="q8" value="une">une</label>
+        <label><input type="radio" name="q8" value="la">la</label>
+      </div>
+      <div class="feedback" id="f8"></div>
+    </div>
+
+    <div class="card">
+      <div class="q">9) Ce n'est que <span class="blank">__</span> <i>premier</i> essai.</div>
+      <div class="options" data-q="9">
+        <label><input type="radio" name="q9" value="un">un</label>
+        <label><input type="radio" name="q9" value="le">le</label>
+        <label><input type="radio" name="q9" value="une">une</label>
+        <label><input type="radio" name="q9" value="la">la</label>
+      </div>
+      <div class="feedback" id="f9"></div>
+    </div>
+
+    <div class="card">
+      <div class="q">10) <span class="blank">__</span> <i>premier</i> essai a été concluant.</div>
+      <div class="options" data-q="10">
+        <label><input type="radio" name="q10" value="un">un</label>
+        <label><input type="radio" name="q10" value="le">le</label>
+        <label><input type="radio" name="q10" value="une">une</label>
+        <label><input type="radio" name="q10" value="la">la</label>
+      </div>
+      <div class="feedback" id="f10"></div>
+    </div>
+
+    <!-- 11–20: контексты + идиомы -->
+    <div class="card">
+      <div class="q">11) Il nous faut <span class="blank">__</span> <i>troisième</i> facture pour le dossier.</div>
+      <div class="options" data-q="11">
+        <label><input type="radio" name="q11" value="un">un</label>
+        <label><input type="radio" name="q11" value="le">le</label>
+        <label><input type="radio" name="q11" value="une">une</label>
+        <label><input type="radio" name="q11" value="la">la</label>
+      </div>
+      <div class="feedback" id="f11"></div>
+    </div>
+
+    <div class="card">
+      <div class="q">12) <span class="blank">__</span> <i>troisième</i> facture sera réglée demain.</div>
+      <div class="options" data-q="12">
+        <label><input type="radio" name="q12" value="un">un</label>
+        <label><input type="radio" name="q12" value="le">le</label>
+        <label><input type="radio" name="q12" value="une">une</label>
+        <label><input type="radio" name="q12" value="la">la</label>
+      </div>
+      <div class="feedback" id="f12"></div>
+    </div>
+
+    <div class="card">
+      <div class="q">13) J'ai lu <span class="blank">__</span> <i>dernier</i> chapitre avant de dormir.</div>
+      <div class="options" data-q="13">
+        <label><input type="radio" name="q13" value="un">un</label>
+        <label><input type="radio" name="q13" value="le">le</label>
+        <label><input type="radio" name="q13" value="une">une</label>
+        <label><input type="radio" name="q13" value="la">la</label>
+      </div>
+      <div class="feedback" id="f13"></div>
+    </div>
+
+    <div class="card">
+      <div class="q">14) Accorde-moi <span class="blank">__</span> <i>dernière</i> tentative.</div>
+      <div class="options" data-q="14">
+        <label><input type="radio" name="q14" value="un">un</label>
+        <label><input type="radio" name="q14" value="le">le</label>
+        <label><input type="radio" name="q14" value="une">une</label>
+        <label><input type="radio" name="q14" value="la">la</label>
+      </div>
+      <div class="feedback" id="f14"></div>
+    </div>
+
+    <div class="card">
+      <div class="q">15) Nous procéderons, dans <span class="blank">__</span> <i>premier</i> temps, à une analyse rapide.</div>
+      <div class="options" data-q="15">
+        <label><input type="radio" name="q15" value="un">un</label>
+        <label><input type="radio" name="q15" value="le">le</label>
+        <label><input type="radio" name="q15" value="une">une</label>
+        <label><input type="radio" name="q15" value="la">la</label>
+      </div>
+      <div class="feedback" id="f15"></div>
+    </div>
+
+    <div class="card">
+      <div class="q">16) C’est <span class="blank">__</span> <i>troisième</i> fois que tu arrives en retard.</div>
+      <div class="options" data-q="16">
+        <label><input type="radio" name="q16" value="un">un</label>
+        <label><input type="radio" name="q16" value="le">le</label>
+        <label><input type="radio" name="q16" value="une">une</label>
+        <label><input type="radio" name="q16" value="la">la</label>
+      </div>
+      <div class="feedback" id="f16"></div>
+    </div>
+
+    <div class="card">
+      <div class="q">17) Il a rendu <span class="blank">__</span> <i>premier</i> brouillon au professeur.</div>
+      <div class="options" data-q="17">
+        <label><input type="radio" name="q17" value="un">un</label>
+        <label><input type="radio" name="q17" value="le">le</label>
+        <label><input type="radio" name="q17" value="une">une</label>
+        <label><input type="radio" name="q17" value="la">la</label>
+      </div>
+      <div class="feedback" id="f17"></div>
+    </div>
+
+    <div class="card">
+      <div class="q">18) <span class="blank">__</span> <i>premier</i> brouillon a été accepté sans réserves.</div>
+      <div class="options" data-q="18">
+        <label><input type="radio" name="q18" value="un">un</label>
+        <label><input type="radio" name="q18" value="le">le</label>
+        <label><input type="radio" name="q18" value="une">une</label>
+        <label><input type="radio" name="q18" value="la">la</label>
+      </div>
+      <div class="feedback" id="f18"></div>
+    </div>
+
+    <div class="card">
+      <div class="q">19) Il a envoyé <span class="blank">__</span> <i>dernier</i> message juste avant la réunion.</div>
+      <div class="options" data-q="19">
+        <label><input type="radio" name="q19" value="un">un</label>
+        <label><input type="radio" name="q19" value="le">le</label>
+        <label><input type="radio" name="q19" value="une">une</label>
+        <label><input type="radio" name="q19" value="la">la</label>
+      </div>
+      <div class="feedback" id="f19"></div>
+    </div>
+
+    <div class="card">
+      <div class="q">20) <span class="blank">__</span> <i>dernier</i> message a été supprimé par erreur.</div>
+      <div class="options" data-q="20">
+        <label><input type="radio" name="q20" value="un">un</label>
+        <label><input type="radio" name="q20" value="le">le</label>
+        <label><input type="radio" name="q20" value="une">une</label>
+        <label><input type="radio" name="q20" value="la">la</label>
+      </div>
+      <div class="feedback" id="f20"></div>
+    </div>
+
+    <div class="card">
+      <div class="section-title">Панель управления</div>
+      <div class="controls">
+        <button id="checkBtn">Проверить</button>
+        <button id="showAns" class="secondary">Показать ответы</button>
+        <button id="resetBtn" class="secondary">Сбросить</button>
+        <div class="score" id="score"></div>
+      </div>
+    </div>
+
+    <button id="togglePost" class="post-toggle">Освежить объяснения</button>
+    <div id="post" class="post">
+      <div class="post-body">Всегда ли определённый артикль с dernier, premier, deuxième?
+
+Во многих грам. справочниках можно встретить упрощение, будто с порядковыми числительными, прилагательными même, seul, unique, prochain и некоторыми другими сочетается только определённый артикль.
+
+Однако в реальности мы легко встретим предложения:
+Créer une première impression – создавать первое впечатление.
+Fais une dernière chose pour moi. – Сделай для меня ещё кое-что напоследок.
+Sept familles se sont retrouvées sous un même toit. – 7 семей оказались под одной крышей.
+
+Почему так происходит? И когда нужно отступать от постулатов грамматик?
+Выпускаю цикл постов на эту тему, сегодня разберём порядковые числительные и прилагательное dernier.
+
+Пособия следуют базовому правилу: для уникальных объектов, когда мы сразу понимаем, о каком объекте идёт речь, мы используем определённый артикль: une tour – какая-то башня, La Tour Eifel – та самая, un chien – одна собака, le chien de mon oncle – именно собака моего дяди. Поэтому, если с существительным употреблено прилагательное, которое выделяет его как уникальный объект, единственный в своём роде, то ставится определённый артикль. Поэтому, например, с превосходной степенью артикль всегда определённый la plus belle maison – самый красивый дом — может быть только один, остальные менее красивые. По этой же логике часто, но не всегда, работают числительные.
+
+Un film de ce réalisateur me plait. – Мне нравится один фильм этого режиссёра.
+Непонятно про какой фильм идёт речь. Один из его фильмов.
+Le premier film de ce réalisateur me plait. – Первый фильм этого режиссёра вызвал много реакций.
+
+Когда отступать от правила? — Когда порядковое числительное или прилагательное не отсылает нас к какому-то уникальному явлению, а к очередному явлению среди подобных.
+
+Все порядковые числительные : deuxième, troisième, etc – будут сочетаться с неопределённым артиклем, когда означают ещё один.
+
+Le comité exige un deuxième exemplaire. Комитет требует ещё один (второй) экземпляр.
+Le deuxième exemplaire – нам нужен именно второй и он принципиально отличается от le premier exemplaire, un deuxième – просто ещё один аналогичный (в плюс к первому).
+Потом мы можем сказать. Contrairement au premier exemplaire, le deuxième contenait des fautes. И это уже не просто очередные экземпляры, а те самые, которые выдали вторым или первым, каждый уникален в данном контексте.
+
+On a besoin d'un quatrième joueur. – Нам нужен ещё один (четвертый) игрок.
+Un quatrième – надо найти кого угодно (неопределенно кого) на роль 4-ого игрока.
+On a besoin du quatrième игрок. Il était le meilleur.
+Нам нужен тот самый четвертый игрок (который раньше играл на этой роли), он был лучшим.
+Il existe une troisième voie для … Есть ещё один (третий) путь, чтобы…
+
+Похожая же логика работает с dernier – ещё один; часто с оттенком «напоследок».
+
+Une dernière вопрос avant que vous ne partiez. – И последний вопрос прежде, чем вы уйдёте. (Вопрос ещё неопределён, неизвестен, поэтому une).
+Il a jeté un dernier coup d'œil en arrière. – Он обернулся и взглянул назад напоследок.
+
+Premier – первый, но мы ожидаем, что будут ещё подобные и не знаем сколько, иногда на русский это можно будет перевести словом первоначальный, т.е. первый, кладущий начало.
+
+Ce n'est qu'un premier pas sur un chemin difficile. – Это всё лишь первый (и ещё будет сколько-то других) шаг на сложном пути.
+Le premier pas переводилось бы «тот самый первый шаг».
+Il a fait un premier acompte sur une maison. – Он сделал первоначальный взнос для дома.
+Six mois plus tard on avait une première version stable. – Шестью годами спустя мы имели первую стабильную версию (затем ожидались новые версии).
+
+Таким образом, выбор артикля зависит не от самого прилагательного (premier, dernier, deuxième и т. д.), а от того, представляем ли мы предмет как уникальный (le) или как один из ряда (un).
+
+Запомните, также несколько устойчивых оборотов с артиклями.
+Dans un premier temps – Для начала; входе первого этапа, части.
+Dans un deuxième temps – Во второй части, …
+Можно использовать для введения плана выступления.
+Dans un premier temps, nous parlerons de …
+
+С’est la n-ième fois que – это X раз, как что-то происходит.
+C’est la première fois que je te vois seule. Это первый раз, как я тебя вижу одну.</div>
+    </div>
+
+  </main>
+
+  <footer>
+    <div>Связаться и больше материалов: <a href="https://vk.com/normproffr" target="_blank" rel="noopener">VK</a> · <a href="https://t.me/normproffr" target="_blank" rel="noopener">Telegram</a></div>
+  </footer>
+
+  <script>
+    // Правильные ответы
+    const answers = {
+      1: "un",  2: "le",  3: "un",  4: "le",  5: "une",
+      6: "la",  7: "une", 8: "la",  9: "un", 10: "le",
+      11: "une",12: "la", 13: "le", 14: "une",15: "un",
+      16: "la", 17: "un", 18: "le", 19: "un", 20: "le"
+    };
+
+    const explanations = {
+      1: "un deuxième rapport = ещё один (добавочный) второй.",
+      2: "le deuxième rapport = тот самый второй отчёт.",
+      3: "un quatrième participant = нужен ещё один участник, неважно кто.",
+      4: "le quatrième participant = конкретный «тот самый».",
+      5: "une première chanson = первая как initial.",
+      6: "la première chanson = та самая первая (уникализована).",
+      7: "une dernière question = ещё одну напоследок.",
+      8: "la dernière question = финальная в ряду, «та самая».",
+      9: "un premier essai = лишь первый / начальный.",
+      10:"le premier essai = уникализованный первый.",
+      11:"une troisième facture = ещё одну (третью).",
+      12:"la третья facture = именно третья (определённая).",
+      13:"le dernier chapitre = последний в книге (уникальный).",
+      14:"une последняя tentative = ещё одну попытку напоследок.",
+      15:"dans un premier temps → устойчиво: всегда «un».",
+      16:"c’est la troisième fois que… → устойчиво: всегда «la».",
+      17:"un premier brouillon = первоначальный черновик.",
+      18:"le premier brouillon = тот самый первый черновик.",
+      19:"un dernier message = один последний (напоследок).",
+      20:"le dernier message = финальный (уникализованный)."
+    };
+
+    function check() {
+      let correct = 0;
+      for (let i = 1; i <= 20; i++) {
+        const radios = document.querySelectorAll(`input[name="q${i}"]`);
+        let selected = null;
+        radios.forEach(r => { if (r.checked) selected = r.value; });
+        const fb = document.getElementById(`f${i}`);
+        if (!selected) {
+          fb.textContent = "Выберите ответ.";
+          fb.className = "feedback";
+        } else if (selected === answers[i]) {
+          fb.innerHTML = "Верно. " + (explanations[i] || "");
+          fb.className = "feedback correct";
+          correct++;
+        } else {
+          fb.innerHTML = `Неверно. Правильно: <b>${answers[i]}</b>. ` + (explanations[i] || "");
+          fb.className = "feedback incorrect";
+        }
+      }
+      document.getElementById("score").textContent = `Результат: ${correct} / 20`;
+    }
+
+    function showAnswers() {
+      for (let i = 1; i <= 20; i++) {
+        const radios = document.querySelectorAll(`input[name="q${i}"]`);
+        radios.forEach(r => { r.checked = (r.value === answers[i]); });
+        const fb = document.getElementById(`f${i}`);
+        fb.innerHTML = `Правильно: <b>${answers[i]}</b>. ` + (explanations[i] || "");
+        fb.className = "feedback correct";
+      }
+      document.getElementById("score").textContent = "Результат: 20 / 20";
+    }
+
+    function resetAll() {
+      for (let i = 1; i <= 20; i++) {
+        const radios = document.querySelectorAll(`input[name="q${i}"]`);
+        radios.forEach(r => { r.checked = false; });
+        const fb = document.getElementById(`f${i}`);
+        fb.textContent = "";
+        fb.className = "feedback";
+      }
+      document.getElementById("score").textContent = "";
+    }
+
+    // Toggle post
+    document.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("checkBtn").addEventListener("click", check);
+      document.getElementById("showAns").addEventListener("click", showAnswers);
+      document.getElementById("resetBtn").addEventListener("click", resetAll);
+      const toggleBtn = document.getElementById("togglePost");
+      const post = document.getElementById("post");
+      toggleBtn.addEventListener("click", () => {
+        const visible = post.style.display === "block";
+        post.style.display = visible ? "none" : "block";
+        toggleBtn.textContent = visible ? "Освежить объяснения" : "Свернуть объяснения";
+      });
+    });
+  </script>
+</body>
+</html>
